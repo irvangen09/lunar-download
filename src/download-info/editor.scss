@@ -1,0 +1,20 @@
+.lunar-dl-editor {
+	box-sizing: border-box;
+	padding: var(--lunar-dl-space-4);
+	border: var(--lunar-dl-border);
+	border-radius: var(--lunar-dl-radius);
+	font-family: inherit;
+	font-size: var(--lunar-dl-font-size-md);
+	line-height: var(--lunar-dl-line-height-tight);
+
+	.lunar-dl-editor__title {
+		margin: 0;
+		font-weight: var(--lunar-dl-font-weight-strong);
+	}
+
+	.lunar-dl-editor__notice {
+		margin: var(--lunar-dl-space-2) 0 0;
+		color: var(--lunar-dl-color-text-muted);
+		font-size: var(--lunar-dl-font-size-sm);
+	}
+}
