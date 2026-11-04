@@ -5,7 +5,6 @@
 .gitignore
 .distignore
 .phpunit.result.cache
-.stylelintrc.json
 .vscode
 .idea
 CHANGELOG.md
