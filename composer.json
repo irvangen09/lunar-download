@@ -28,6 +28,7 @@
     },
     "scripts": {
         "lint:php": "phpcs",
+        "lint:php:fix": "phpcbf",
         "test": "phpunit"
     }
 }
