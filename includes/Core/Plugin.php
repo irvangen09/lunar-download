@@ -2,13 +2,17 @@
 
 namespace LunarDownload\Core;
 
+use LunarDownload\Services\DesignTokens;
 use LunarDownload\Settings\Settings;
 use LunarDownload\Settings\SettingsPage;
 
 class Plugin {
 
 	public function run(): void {
-		( new Settings() )->register();
+		$settings = new Settings();
+		$settings->register();
+
+		( new DesignTokens( $settings ) )->register();
 		( new BlockRegistry() )->register();
 
 		if ( is_admin() ) {

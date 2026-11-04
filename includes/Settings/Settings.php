@@ -78,6 +78,17 @@ class Settings {
 		return $settings;
 	}
 
+	public function get(): array {
+		return $this->sanitize( get_option( self::OPTION, array() ) );
+	}
+
+	/**
+	 * Returns the color overrides that are set, keyed by token name (primary, surface, border).
+	 */
+	public function get_color_overrides(): array {
+		return array_filter( $this->get()['appearance'] );
+	}
+
 	private function defaults(): array {
 		return array(
 			'fields'      => array(),

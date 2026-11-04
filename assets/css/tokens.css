@@ -1,0 +1,51 @@
+/*
+ * Do not register these with @property: registered tokens resolve
+ * currentColor once at :root and stop following the host theme.
+ */
+:root {
+
+	/* Color */
+	--lunar-dl-color-text: currentcolor;
+	--lunar-dl-color-text-muted: color-mix(in srgb, var(--lunar-dl-color-text) 80%, transparent);
+	--lunar-dl-color-primary: currentcolor;
+	--lunar-dl-color-primary-subtle: color-mix(in srgb, var(--lunar-dl-color-primary) 10%, transparent);
+	--lunar-dl-color-surface: color-mix(in srgb, var(--lunar-dl-color-text) 4%, transparent);
+	--lunar-dl-color-border: color-mix(in srgb, var(--lunar-dl-color-text) 20%, transparent);
+
+	/* Button: outline by default, solid when Settings overrides Primary */
+	--lunar-dl-button-bg: transparent;
+	--lunar-dl-button-color: var(--lunar-dl-color-primary);
+	--lunar-dl-button-border: var(--lunar-dl-color-primary);
+
+	/* Typography */
+	--lunar-dl-font-size-sm: 0.875em;
+	--lunar-dl-font-size-md: 1em;
+	--lunar-dl-font-size-lg: 1.125em;
+	--lunar-dl-font-weight-strong: 600;
+	--lunar-dl-line-height-tight: 1.35;
+
+	/* Border, radius, focus, motion */
+	--lunar-dl-radius: 6px;
+	--lunar-dl-border-width: 1px;
+	--lunar-dl-border-width-strong: 2px;
+	--lunar-dl-border: var(--lunar-dl-border-width) solid var(--lunar-dl-color-border);
+	--lunar-dl-focus-ring-width: 2px;
+	--lunar-dl-focus-ring-offset: 2px;
+	--lunar-dl-duration-fast: 150ms;
+
+	/* Spacing */
+	--lunar-dl-unit: max(1rem, 16px);
+	--lunar-dl-space-1: calc(var(--lunar-dl-unit) * 0.25);
+	--lunar-dl-space-2: calc(var(--lunar-dl-unit) * 0.5);
+	--lunar-dl-space-3: calc(var(--lunar-dl-unit) * 0.75);
+	--lunar-dl-space-4: var(--lunar-dl-unit);
+	--lunar-dl-space-5: calc(var(--lunar-dl-unit) * 1.5);
+	--lunar-dl-space-6: calc(var(--lunar-dl-unit) * 2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	:root {
+		--lunar-dl-duration-fast: 0ms;
+	}
+}
