@@ -1,0 +1,11 @@
+// This screen follows the WordPress admin design and does not load the
+// front-end design tokens, so spacing uses plain values.
+
+.lunar-dl-settings {
+	max-width: 720px;
+	margin-top: 16px;
+
+	.components-tab-panel__tab-content {
+		padding-top: 16px;
+	}
+}
