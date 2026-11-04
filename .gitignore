@@ -1,0 +1,18 @@
+# Dependencies
+/node_modules/
+/vendor/
+
+# Build output
+/build/
+
+# Release packages
+/*.zip
+
+# Test caches
+.phpunit.result.cache
+
+# Editors and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

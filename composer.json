@@ -1,0 +1,33 @@
+{
+    "name": "irvangen09/lunar-download",
+    "description": "Development tooling for the Lunar Download plugin (PHP lint and tests). Not used at runtime.",
+    "type": "project",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Irvan Noerfazri"
+        }
+    ],
+    "require": {
+        "php": ">=8.0"
+    },
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "phpcompatibility/phpcompatibility-wp": "^2.1",
+        "phpunit/phpunit": "^9.6",
+        "wp-coding-standards/wpcs": "^3.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "platform": {
+            "php": "8.0.30"
+        },
+        "sort-packages": true
+    },
+    "scripts": {
+        "lint:php": "phpcs",
+        "test": "phpunit"
+    }
+}

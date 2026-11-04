@@ -1,0 +1,27 @@
+# Development and tooling files excluded from the release package.
+.editorconfig
+.gitattributes
+.github
+.gitignore
+.distignore
+.phpunit.result.cache
+.stylelintrc.json
+.vscode
+.idea
+CHANGELOG.md
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+README.md
+SECURITY.md
+composer.json
+composer.lock
+node_modules
+package-lock.json
+package.json
+phpcs.xml
+phpunit.xml.dist
+src
+tests
+vendor
+webpack.config.js
+*.zip

@@ -1,0 +1,44 @@
+{
+  "name": "lunar-download",
+  "version": "0.1.0",
+  "description": "A Gutenberg block for presenting download information, with correct link handling and honest structured data.",
+  "author": "Irvan Noerfazri",
+  "license": "GPL-2.0-or-later",
+  "private": true,
+  "engines": {
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+  },
+  "files": [
+    "assets",
+    "build",
+    "includes",
+    "languages",
+    "lunar-download.php",
+    "readme.txt",
+    "uninstall.php"
+  ],
+  "scripts": {
+    "build": "wp-scripts build",
+    "start": "wp-scripts start",
+    "plugin-zip": "npm run build && wp-scripts plugin-zip",
+    "lint:js": "wp-scripts lint-js src tests",
+    "lint:css": "wp-scripts lint-style \"src/**/*.scss\"",
+    "test": "wp-scripts test-unit-jest"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@wordpress/api-fetch": "^7.33.1",
+    "@wordpress/babel-preset-default": "^8.55.0",
+    "@wordpress/block-editor": "^15.6.9",
+    "@wordpress/blocks": "^15.6.3",
+    "@wordpress/components": "^30.6.5",
+    "@wordpress/data": "^10.33.1",
+    "@wordpress/element": "^6.33.1",
+    "@wordpress/i18n": "^6.6.1",
+    "@wordpress/jest-preset-default": "^14.2.0",
+    "@wordpress/scripts": "^36.0.0",
+    "babel-jest": "^30.5.0",
+    "jest": "^30.5.0",
+    "jest-environment-jsdom": "^30.5.0"
+  }
+}
