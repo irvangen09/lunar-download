@@ -109,15 +109,46 @@ class SettingsTest extends TestCase {
 		$this->assertSame( $this->defaults(), $this->settings->sanitize( array( 'appearance' => '#fff' ) ) );
 	}
 
-	public function test_fields_and_own_domains_stay_empty(): void {
+	public function test_valid_fields_are_kept_and_normalized(): void {
 		$result = $this->settings->sanitize(
 			array(
-				'fields'      => array( array( 'slug' => 'kredit' ) ),
-				'own_domains' => array( 'example.com' ),
+				'fields' => array(
+					array(
+						'label' => 'Kredit',
+						'type'  => 'text',
+					),
+					array( 'slug' => 'no-label' ),
+				),
 			)
 		);
 
-		$this->assertSame( array(), $result['fields'] );
+		$this->assertCount( 1, $result['fields'] );
+		$this->assertSame( 'kredit', $result['fields'][0]['slug'] );
+	}
+
+	public function test_stored_fields_survive_a_save_that_omits_them(): void {
+		$stored = array(
+			'fields' => array(
+				array(
+					'slug'  => 'kredit',
+					'label' => 'Kredit',
+					'type'  => 'text',
+				),
+			),
+		);
+
+		$result = $this->settings->sanitize( array( 'fields' => array() ), $stored );
+
+		$this->assertSame( array( 'kredit' ), array_column( $result['fields'], 'slug' ) );
+	}
+
+	public function test_previous_value_that_is_not_an_array_is_ignored(): void {
+		$this->assertSame( $this->defaults(), $this->settings->sanitize( array(), 'junk' ) );
+	}
+
+	public function test_own_domains_stay_empty(): void {
+		$result = $this->settings->sanitize( array( 'own_domains' => array( 'example.com' ) ) );
+
 		$this->assertSame( array(), $result['own_domains'] );
 	}
 }
