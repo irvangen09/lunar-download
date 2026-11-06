@@ -2,6 +2,7 @@
 
 namespace LunarDownload\Settings;
 
+use LunarDownload\Services\DomainList;
 use LunarDownload\Services\FieldRegistry;
 
 class Settings {
@@ -10,8 +11,11 @@ class Settings {
 
 	private FieldRegistry $registry;
 
-	public function __construct( ?FieldRegistry $registry = null ) {
+	private DomainList $domains;
+
+	public function __construct( ?FieldRegistry $registry = null, ?DomainList $domains = null ) {
 		$this->registry = $registry ?? new FieldRegistry();
+		$this->domains  = $domains ?? new DomainList();
 	}
 
 	public function register(): void {
@@ -75,9 +79,6 @@ class Settings {
 	/**
 	 * Returns a value containing only known keys and valid entries.
 	 *
-	 * The own_domains list stays empty: its entries are not accepted without
-	 * validation.
-	 *
 	 * @param mixed $value    Raw option value.
 	 * @param mixed $previous Raw value that is currently stored.
 	 */
@@ -87,7 +88,8 @@ class Settings {
 		$settings   = $this->defaults();
 		$appearance = is_array( $value['appearance'] ?? null ) ? $value['appearance'] : array();
 
-		$settings['fields'] = $this->registry->sanitize( $value['fields'] ?? array(), $previous['fields'] ?? array() );
+		$settings['fields']      = $this->registry->sanitize( $value['fields'] ?? array(), $previous['fields'] ?? array() );
+		$settings['own_domains'] = $this->domains->sanitize( $value['own_domains'] ?? array() );
 
 		foreach ( array_keys( $settings['appearance'] ) as $key ) {
 			$color = $appearance[ $key ] ?? '';

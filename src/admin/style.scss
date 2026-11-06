@@ -82,3 +82,20 @@
 	display: flex;
 	gap: 8px;
 }
+
+.lunar-dl-links__notice {
+	margin: 0 0 16px;
+}
+
+.lunar-dl-links__form {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	margin-bottom: 24px;
+}
+
+.lunar-dl-links__rules {
+	margin: 8px 0 0;
+	padding-inline-start: 20px;
+	list-style: disc;
+}
