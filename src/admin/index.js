@@ -1,10 +1,15 @@
 import { createRoot } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
-import { TabPanel } from '@wordpress/components';
+import { __, sprintf } from '@wordpress/i18n';
+import { Notice, Spinner, TabPanel } from '@wordpress/components';
+
+import FieldsTab from './fields/FieldsTab';
+import useSettings from './use-settings';
 
 import './style.scss';
 
 function SettingsApp() {
+	const { settings, error, isSaving, save } = useSettings();
+
 	const tabs = [
 		{ name: 'fields', title: __( 'Fields', 'lunar-download' ) },
 		{ name: 'links', title: __( 'Links', 'lunar-download' ) },
@@ -12,10 +17,6 @@ function SettingsApp() {
 	];
 
 	const messages = {
-		fields: __(
-			'Field management is not available yet.',
-			'lunar-download'
-		),
 		links: __( 'Link settings are not available yet.', 'lunar-download' ),
 		appearance: __(
 			'Appearance settings are not available yet.',
@@ -23,10 +24,39 @@ function SettingsApp() {
 		),
 	};
 
+	if ( error ) {
+		return (
+			<Notice status="error" isDismissible={ false }>
+				{ sprintf(
+					/* translators: %s: error message from the server. */
+					__(
+						'The settings could not be loaded. %s',
+						'lunar-download'
+					),
+					error
+				) }
+			</Notice>
+		);
+	}
+
+	if ( ! settings ) {
+		return <Spinner />;
+	}
+
 	return (
 		<div className="lunar-dl-settings">
 			<TabPanel tabs={ tabs }>
-				{ ( tab ) => <p>{ messages[ tab.name ] }</p> }
+				{ ( tab ) =>
+					'fields' === tab.name ? (
+						<FieldsTab
+							fields={ settings.fields }
+							isSaving={ isSaving }
+							onSave={ ( fields ) => save( { fields } ) }
+						/>
+					) : (
+						<p>{ messages[ tab.name ] }</p>
+					)
+				}
 			</TabPanel>
 		</div>
 	);

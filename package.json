@@ -21,9 +21,9 @@
     "build": "wp-scripts build",
     "start": "wp-scripts start",
     "plugin-zip": "npm run build && wp-scripts plugin-zip",
-    "lint:js": "wp-scripts lint-js src",
+    "lint:js": "wp-scripts lint-js src tests",
     "lint:css": "wp-scripts lint-style \"src/**/*.scss\"",
-    "test": "wp-scripts test-unit-jest --passWithNoTests"
+    "test": "wp-scripts test-unit-jest"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
