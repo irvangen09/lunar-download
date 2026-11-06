@@ -3,6 +3,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import { Notice, Spinner, TabPanel } from '@wordpress/components';
 
 import FieldsTab from './fields/FieldsTab';
+import LinksTab from './links/LinksTab';
 import useSettings from './use-settings';
 
 import './style.scss';
@@ -15,14 +16,6 @@ function SettingsApp() {
 		{ name: 'links', title: __( 'Links', 'lunar-download' ) },
 		{ name: 'appearance', title: __( 'Appearance', 'lunar-download' ) },
 	];
-
-	const messages = {
-		links: __( 'Link settings are not available yet.', 'lunar-download' ),
-		appearance: __(
-			'Appearance settings are not available yet.',
-			'lunar-download'
-		),
-	};
 
 	if ( error ) {
 		return (
@@ -46,17 +39,38 @@ function SettingsApp() {
 	return (
 		<div className="lunar-dl-settings">
 			<TabPanel tabs={ tabs }>
-				{ ( tab ) =>
-					'fields' === tab.name ? (
-						<FieldsTab
-							fields={ settings.fields }
-							isSaving={ isSaving }
-							onSave={ ( fields ) => save( { fields } ) }
-						/>
-					) : (
-						<p>{ messages[ tab.name ] }</p>
-					)
-				}
+				{ ( tab ) => {
+					if ( 'fields' === tab.name ) {
+						return (
+							<FieldsTab
+								fields={ settings.fields }
+								isSaving={ isSaving }
+								onSave={ ( fields ) => save( { fields } ) }
+							/>
+						);
+					}
+
+					if ( 'links' === tab.name ) {
+						return (
+							<LinksTab
+								ownDomains={ settings.own_domains }
+								isSaving={ isSaving }
+								onSave={ ( ownDomains ) =>
+									save( { own_domains: ownDomains } )
+								}
+							/>
+						);
+					}
+
+					return (
+						<p>
+							{ __(
+								'Appearance settings are not available yet.',
+								'lunar-download'
+							) }
+						</p>
+					);
+				} }
 			</TabPanel>
 		</div>
 	);

@@ -9,3 +9,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 
 - Settings → Lunar Download → Fields: create, edit, reorder, archive, and restore the fields you use in download entries.
+- Settings → Lunar Download → Links: list the domains that count as your own, and see how links are marked.

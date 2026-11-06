@@ -1,12 +1,6 @@
 /* global describe, it, expect, jest, beforeEach, afterEach */
-// React is provided by @wordpress/element; act() is only exported by react itself.
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { act } from 'react';
-import { createRoot } from '@wordpress/element';
-
 import FieldsTab from '../../src/admin/fields/FieldsTab';
-
-globalThis.IS_REACT_ACT_ENVIRONMENT = true;
+import { createHarness } from './helpers';
 
 const field = ( slug, extra = {} ) => ( {
 	slug,
@@ -17,68 +11,26 @@ const field = ( slug, extra = {} ) => ( {
 	...extra,
 } );
 
+let ui;
 let container;
-let root;
 
 function render( props ) {
-	act( () => {
-		root.render( <FieldsTab isSaving={ false } { ...props } /> );
-	} );
-}
-
-const buttonByLabel = ( label ) =>
-	Array.from( container.querySelectorAll( 'button' ) ).find(
-		( button ) => button.getAttribute( 'aria-label' ) === label
-	) ||
-	Array.from( container.querySelectorAll( 'button' ) ).find(
-		( button ) => button.textContent === label
-	);
-
-async function click( button ) {
-	await act( async () => {
-		button.click();
-	} );
-}
-
-function type( input, value ) {
-	const setter = Object.getOwnPropertyDescriptor(
-		window.HTMLInputElement.prototype,
-		'value'
-	).set;
-
-	act( () => {
-		setter.call( input, value );
-		input.dispatchEvent( new Event( 'input', { bubbles: true } ) );
-	} );
-}
-
-async function submit() {
-	await act( async () => {
-		container
-			.querySelector( 'form' )
-			.dispatchEvent(
-				new Event( 'submit', { bubbles: true, cancelable: true } )
-			);
-	} );
+	ui.render( <FieldsTab isSaving={ false } { ...props } /> );
 }
 
 beforeEach( () => {
-	container = document.createElement( 'div' );
-	document.body.appendChild( container );
-	root = createRoot( container );
+	ui = createHarness();
+	container = ui.container;
 } );
 
-afterEach( () => {
-	act( () => root.unmount() );
-	container.remove();
-} );
+afterEach( () => ui.unmount() );
 
 describe( 'FieldsTab', () => {
 	it( 'shows an empty state and an add button', () => {
 		render( { fields: [], onSave: jest.fn() } );
 
 		expect( container.textContent ).toContain( 'No fields yet' );
-		expect( buttonByLabel( 'Add field' ) ).toBeTruthy();
+		expect( ui.buttonByLabel( 'Add field' ) ).toBeTruthy();
 	} );
 
 	it( 'lists fields with type, role and archived state', () => {
@@ -97,23 +49,23 @@ describe( 'FieldsTab', () => {
 			'Structured data: Creator'
 		);
 		expect( items[ 1 ].textContent ).toContain( 'Archived' );
-		expect( buttonByLabel( 'Restore: LAMA' ) ).toBeTruthy();
-		expect( buttonByLabel( 'Archive: KREDIT' ) ).toBeTruthy();
+		expect( ui.buttonByLabel( 'Restore: LAMA' ) ).toBeTruthy();
+		expect( ui.buttonByLabel( 'Archive: KREDIT' ) ).toBeTruthy();
 	} );
 
 	it( 'disables the move buttons at the ends of the list', () => {
 		render( { fields: [ field( 'a' ), field( 'b' ) ], onSave: jest.fn() } );
 
-		expect( buttonByLabel( 'Move up: A' ).disabled ).toBe( true );
-		expect( buttonByLabel( 'Move down: A' ).disabled ).toBe( false );
-		expect( buttonByLabel( 'Move down: B' ).disabled ).toBe( true );
+		expect( ui.buttonByLabel( 'Move up: A' ).disabled ).toBe( true );
+		expect( ui.buttonByLabel( 'Move down: A' ).disabled ).toBe( false );
+		expect( ui.buttonByLabel( 'Move down: B' ).disabled ).toBe( true );
 	} );
 
 	it( 'saves the new order', async () => {
 		const onSave = jest.fn().mockResolvedValue( {} );
 		render( { fields: [ field( 'a' ), field( 'b' ) ], onSave } );
 
-		await click( buttonByLabel( 'Move down: A' ) );
+		await ui.click( ui.buttonByLabel( 'Move down: A' ) );
 
 		expect( onSave.mock.calls[ 0 ][ 0 ].map( ( f ) => f.slug ) ).toEqual( [
 			'b',
@@ -126,7 +78,7 @@ describe( 'FieldsTab', () => {
 		const onSave = jest.fn().mockResolvedValue( {} );
 		render( { fields: [ field( 'a' ) ], onSave } );
 
-		await click( buttonByLabel( 'Archive: A' ) );
+		await ui.click( ui.buttonByLabel( 'Archive: A' ) );
 
 		expect( onSave.mock.calls[ 0 ][ 0 ][ 0 ].archived ).toBe( true );
 		expect( container.textContent ).toContain( 'Field archived.' );
@@ -136,7 +88,7 @@ describe( 'FieldsTab', () => {
 		const onSave = jest.fn().mockRejectedValue( new Error( 'Nope' ) );
 		render( { fields: [ field( 'a' ) ], onSave } );
 
-		await click( buttonByLabel( 'Archive: A' ) );
+		await ui.click( ui.buttonByLabel( 'Archive: A' ) );
 
 		expect( container.textContent ).toContain( 'Nope' );
 	} );
@@ -145,8 +97,8 @@ describe( 'FieldsTab', () => {
 		const onSave = jest.fn();
 		render( { fields: [], onSave } );
 
-		await click( buttonByLabel( 'Add field' ) );
-		await submit();
+		await ui.click( ui.buttonByLabel( 'Add field' ) );
+		await ui.submit();
 
 		expect( container.textContent ).toContain( 'Enter a label.' );
 		expect( container.textContent ).toContain(
@@ -159,9 +111,9 @@ describe( 'FieldsTab', () => {
 		const onSave = jest.fn().mockResolvedValue( {} );
 		render( { fields: [ field( 'a' ) ], onSave } );
 
-		await click( buttonByLabel( 'Add field' ) );
-		type( container.querySelector( 'input[type="text"]' ), 'Credit' );
-		await submit();
+		await ui.click( ui.buttonByLabel( 'Add field' ) );
+		ui.type( container.querySelector( 'input[type="text"]' ), 'Credit' );
+		await ui.submit();
 
 		const saved = onSave.mock.calls[ 0 ][ 0 ];
 
@@ -182,7 +134,7 @@ describe( 'FieldsTab', () => {
 			onSave: jest.fn(),
 		} );
 
-		await click( buttonByLabel( 'Edit: KREDIT' ) );
+		await ui.click( ui.buttonByLabel( 'Edit: KREDIT' ) );
 
 		expect( container.querySelector( 'form' ) ).not.toBeNull();
 		expect( container.querySelector( 'code' ).textContent ).toBe(
@@ -194,8 +146,8 @@ describe( 'FieldsTab', () => {
 	it( 'returns to the list on cancel', async () => {
 		render( { fields: [ field( 'a' ) ], onSave: jest.fn() } );
 
-		await click( buttonByLabel( 'Edit: A' ) );
-		await click( buttonByLabel( 'Cancel' ) );
+		await ui.click( ui.buttonByLabel( 'Edit: A' ) );
+		await ui.click( ui.buttonByLabel( 'Cancel' ) );
 
 		expect( container.querySelector( 'form' ) ).toBeNull();
 		expect( container.querySelectorAll( 'li' ) ).toHaveLength( 1 );

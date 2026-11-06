@@ -146,8 +146,18 @@ class SettingsTest extends TestCase {
 		$this->assertSame( $this->defaults(), $this->settings->sanitize( array(), 'junk' ) );
 	}
 
-	public function test_own_domains_stay_empty(): void {
-		$result = $this->settings->sanitize( array( 'own_domains' => array( 'example.com' ) ) );
+	public function test_own_domains_are_normalized_and_invalid_ones_dropped(): void {
+		$result = $this->settings->sanitize(
+			array(
+				'own_domains' => array( 'https://www.Example.com/a', 'nope', 'example.com', 'other.net' ),
+			)
+		);
+
+		$this->assertSame( array( 'example.com', 'other.net' ), $result['own_domains'] );
+	}
+
+	public function test_own_domains_that_are_not_a_list_give_an_empty_list(): void {
+		$result = $this->settings->sanitize( array( 'own_domains' => 'example.com' ) );
 
 		$this->assertSame( array(), $result['own_domains'] );
 	}
