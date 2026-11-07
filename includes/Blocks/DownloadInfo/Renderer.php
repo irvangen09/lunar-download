@@ -62,7 +62,15 @@ class Renderer {
 			$attributes['alt'] = $entry->image_alt;
 		}
 
-		$image = wp_get_attachment_image( $entry->image_id, 'large', false, $attributes );
+		$size = 'large';
+
+		// A small thumbnail needs no large image; the sizes hint lets the browser pick a small one.
+		if ( 'compact' === $entry->preset ) {
+			$size                = 'medium';
+			$attributes['sizes'] = '112px';
+		}
+
+		$image = wp_get_attachment_image( $entry->image_id, $size, false, $attributes );
 
 		return '' === $image ? '' : '<figure class="lunar-dl-entry__media">' . $image . '</figure>';
 	}

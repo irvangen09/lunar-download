@@ -62,8 +62,9 @@ if ( ! function_exists( 'wp_get_attachment_image' ) ) {
 			return '';
 		}
 
-		$alt = $attributes['alt'] ?? 'attachment alt ' . $id;
+		$alt   = $attributes['alt'] ?? 'attachment alt ' . $id;
+		$sizes = isset( $attributes['sizes'] ) ? ' sizes="' . esc_attr( $attributes['sizes'] ) . '"' : '';
 
-		return '<img src="https://example.test/uploads/' . $id . '.jpg" class="' . ( $attributes['class'] ?? '' ) . '" alt="' . esc_attr( $alt ) . '" loading="lazy" />';
+		return '<img src="https://example.test/uploads/' . $id . '.jpg" class="' . ( $attributes['class'] ?? '' ) . '" alt="' . esc_attr( $alt ) . '" data-size="' . $size . '"' . $sizes . ' loading="lazy" />';
 	}
 }

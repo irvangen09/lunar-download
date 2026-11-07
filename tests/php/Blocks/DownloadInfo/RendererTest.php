@@ -314,7 +314,7 @@ class RendererTest extends TestCase {
 			)
 		);
 
-		$this->assertStringContainsString( '<figure class="lunar-dl-entry__media"><img src="https://example.test/uploads/7.jpg" class="lunar-dl-entry__image" alt="attachment alt 7" loading="lazy" /></figure>', $html );
+		$this->assertStringContainsString( '<figure class="lunar-dl-entry__media"><img src="https://example.test/uploads/7.jpg" class="lunar-dl-entry__image" alt="attachment alt 7" data-size="large" loading="lazy" /></figure>', $html );
 	}
 
 	public function test_the_entry_alt_replaces_the_attachment_alt(): void {
@@ -342,5 +342,106 @@ class RendererTest extends TestCase {
 
 	public function test_an_entry_with_only_a_missing_image_renders_nothing(): void {
 		$this->assertSame( '', $this->render( array( 'imageId' => 404 ) ) );
+	}
+
+	public function test_the_compact_style_uses_a_medium_image_with_a_small_sizes_hint(): void {
+		$html = $this->render(
+			array(
+				'preset'  => 'compact',
+				'imageId' => 7,
+			)
+		);
+
+		$this->assertStringContainsString( 'data-size="medium" sizes="112px"', $html );
+	}
+
+	public function test_the_other_styles_use_a_large_image_without_a_sizes_hint(): void {
+		foreach ( array( 'table', 'card', 'detail' ) as $preset ) {
+			$html = $this->render(
+				array(
+					'preset'  => $preset,
+					'imageId' => 7,
+				)
+			);
+
+			$this->assertStringContainsString( 'data-size="large"', $html );
+			$this->assertStringNotContainsString( 'sizes=', $html );
+		}
+	}
+
+	public function test_the_compact_style_shows_two_rows_and_one_button(): void {
+		$html = $this->render(
+			array(
+				'preset' => 'compact',
+				'rows'   => array(
+					array(
+						'label' => 'Skipped',
+						'value' => '',
+					),
+					array(
+						'label' => 'One',
+						'value' => '1',
+					),
+					array(
+						'label' => 'Two',
+						'value' => '2',
+					),
+					array(
+						'label' => 'Three',
+						'value' => '3',
+					),
+				),
+				'links'  => array(
+					array( 'url' => 'javascript:alert(1)' ),
+					array(
+						'label' => 'First',
+						'url'   => '/a',
+					),
+					array(
+						'label' => 'Second',
+						'url'   => '/b',
+					),
+				),
+			)
+		);
+
+		$this->assertSame( 2, substr_count( $html, '<dt>' ) );
+		$this->assertStringContainsString( '<dt>One</dt><dd>1</dd>', $html );
+		$this->assertStringContainsString( '<dt>Two</dt><dd>2</dd>', $html );
+		$this->assertStringNotContainsString( 'Three', $html );
+		$this->assertSame( 1, substr_count( $html, '<a ' ) );
+		$this->assertStringContainsString( '>First</a>', $html );
+		$this->assertStringNotContainsString( 'Second', $html );
+	}
+
+	public function test_the_other_styles_show_every_row_and_link(): void {
+		foreach ( array( 'table', 'card', 'detail' ) as $preset ) {
+			$html = $this->render(
+				array(
+					'preset' => $preset,
+					'rows'   => array(
+						array(
+							'label' => 'One',
+							'value' => '1',
+						),
+						array(
+							'label' => 'Two',
+							'value' => '2',
+						),
+						array(
+							'label' => 'Three',
+							'value' => '3',
+						),
+					),
+					'links'  => array(
+						array( 'url' => '/a' ),
+						array( 'url' => '/b' ),
+					),
+				)
+			);
+
+			$this->assertSame( 3, substr_count( $html, '<dt>' ), $preset );
+			$this->assertSame( 2, substr_count( $html, '<a ' ), $preset );
+		}
 	}
 }

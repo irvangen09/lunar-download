@@ -1,0 +1,61 @@
+// Compact style: one row with a small thumbnail, the values of the first two
+// rows, and one button. The labels stay in the markup for screen readers.
+
+.lunar-dl-entry.lunar-dl-entry--compact {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--lunar-dl-space-3);
+	margin-block: var(--lunar-dl-space-2);
+	padding: var(--lunar-dl-space-3);
+	border: var(--lunar-dl-border);
+	border-radius: var(--lunar-dl-radius);
+
+	.lunar-dl-entry__media {
+		flex: none;
+		width: calc(var(--lunar-dl-unit) * 5.25);
+	}
+
+	.lunar-dl-entry__image {
+		width: 100%;
+		height: calc(var(--lunar-dl-unit) * 3.25);
+		object-fit: cover;
+	}
+
+	.lunar-dl-entry__rows {
+		flex: 1 1 calc(var(--lunar-dl-unit) * 7);
+		min-width: 0;
+		overflow-wrap: anywhere;
+	}
+
+	.lunar-dl-entry__row,
+	.lunar-dl-entry__row dd {
+		display: inline;
+	}
+
+	.lunar-dl-entry__row dt {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	// The dot is drawn, and an empty alternative keeps it out of speech.
+	.lunar-dl-entry__row + .lunar-dl-entry__row::before {
+		content: "\00b7";
+		content: "\00b7" / "";
+		margin-inline: var(--lunar-dl-space-2);
+	}
+
+	.lunar-dl-entry__links {
+		flex: none;
+		margin-inline-start: auto;
+	}
+
+	a.lunar-dl-button {
+		min-width: calc(var(--lunar-dl-unit) * 6);
+	}
+}

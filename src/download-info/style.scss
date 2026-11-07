@@ -1,5 +1,12 @@
 // Every value comes from the design tokens. Theme rules for dl, dt, dd, ul,
 // li, a and img are reset explicitly instead of relying on specificity.
+// Each style (table, card, compact, detail) lives in its own partial and
+// uses a compound selector, so it wins over the shared rules below.
+
+@use "table";
+@use "card";
+@use "compact";
+@use "detail";
 
 .lunar-dl-entry {
 	box-sizing: border-box;
@@ -14,7 +21,7 @@
 	}
 
 	.lunar-dl-entry__media {
-		margin: 0 0 var(--lunar-dl-space-4);
+		margin: 0;
 		padding: 0;
 		border: 0;
 		background: none;
@@ -32,53 +39,21 @@
 		background: none;
 	}
 
-	.lunar-dl-entry__rows {
-		margin: 0;
-		padding: 0;
-		border: 0;
-		border-block-start: var(--lunar-dl-border-width-strong) solid var(--lunar-dl-color-primary);
-		background: none;
-	}
-
-	.lunar-dl-entry__row {
-		display: flex;
-		align-items: center;
-		min-height: calc(var(--lunar-dl-unit) * 2.75);
-		margin: 0;
-		padding: 0;
-		border: 0;
-		border-block-end: var(--lunar-dl-border);
-		background: none;
-	}
-
-	.lunar-dl-entry__row dt {
-		display: flex;
-		flex: 0 0 calc(var(--lunar-dl-unit) * 7);
-		align-items: center;
-		align-self: stretch;
-		margin: 0;
-		padding: var(--lunar-dl-space-2) var(--lunar-dl-space-3);
-		border: 0;
-		background: var(--lunar-dl-color-surface);
-		font-weight: var(--lunar-dl-font-weight-strong);
-		overflow-wrap: anywhere;
-	}
-
+	.lunar-dl-entry__rows,
+	.lunar-dl-entry__row,
+	.lunar-dl-entry__row dt,
 	.lunar-dl-entry__row dd {
-		flex: 1 1 auto;
-		min-width: 0;
 		margin: 0;
-		padding: var(--lunar-dl-space-2) var(--lunar-dl-space-3);
+		padding: 0;
 		border: 0;
 		background: none;
-		overflow-wrap: anywhere;
 	}
 
 	.lunar-dl-entry__links {
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--lunar-dl-space-2);
-		margin: var(--lunar-dl-space-4) 0 0;
+		margin: 0;
 		padding: 0;
 		border: 0;
 		background: none;
@@ -132,6 +107,28 @@
 
 	a.lunar-dl-button:focus:not(:focus-visible) {
 		outline: none;
+	}
+
+	// The first link is the main button; the others are outlined.
+	&.lunar-dl-entry--card,
+	&.lunar-dl-entry--detail {
+
+		.lunar-dl-entry__links li:not(:first-child) a.lunar-dl-button,
+		.lunar-dl-entry__links li:not(:first-child) a.lunar-dl-button:visited,
+		.lunar-dl-entry__links li:not(:first-child) a.lunar-dl-button:hover,
+		.lunar-dl-entry__links li:not(:first-child) a.lunar-dl-button:focus,
+		.lunar-dl-entry__links li:not(:first-child) a.lunar-dl-button:active {
+			color: var(--lunar-dl-color-primary);
+		}
+
+		.lunar-dl-entry__links li:not(:first-child) a.lunar-dl-button {
+			border-color: var(--lunar-dl-color-primary);
+			background: transparent;
+		}
+
+		.lunar-dl-entry__links li:not(:first-child) a.lunar-dl-button:hover {
+			box-shadow: inset 0 0 0 999px var(--lunar-dl-color-primary-subtle);
+		}
 	}
 
 	.lunar-dl-visually-hidden {
