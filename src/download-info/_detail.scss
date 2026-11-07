@@ -28,6 +28,9 @@
 		margin-block-end: var(--lunar-dl-space-1);
 		color: var(--lunar-dl-color-text-muted);
 		font-size: var(--lunar-dl-font-size-sm);
+
+		// Some themes make dt bold.
+		font-weight: inherit;
 	}
 
 	.lunar-dl-entry__row dd {

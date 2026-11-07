@@ -22,10 +22,11 @@
 		object-fit: cover;
 	}
 
+	// The button drops below the text before the text gets cramped.
 	.lunar-dl-entry__rows {
-		flex: 1 1 calc(var(--lunar-dl-unit) * 7);
+		flex: 1 1 calc(var(--lunar-dl-unit) * 9);
 		min-width: 0;
-		overflow-wrap: anywhere;
+		overflow-wrap: break-word;
 	}
 
 	.lunar-dl-entry__row,
