@@ -381,4 +381,75 @@ class EntryDataTest extends TestCase {
 
 		$this->assertSame( 'nofollow', $link['rel'] );
 	}
+
+	public function test_the_compact_style_keeps_the_first_two_shown_rows_and_the_first_valid_link(): void {
+		$entry = $this->entry(
+			array(
+				'preset' => 'compact',
+				'rows'   => array(
+					array(
+						'field' => 'kredit',
+						'value' => '',
+					),
+					array(
+						'field' => 'kredit',
+						'value' => 'A',
+					),
+					array(
+						'label' => 'Two',
+						'value' => 'B',
+					),
+					array(
+						'label' => 'Three',
+						'value' => 'C',
+					),
+				),
+				'links'  => array(
+					array( 'url' => 'javascript:alert(1)' ),
+					array(
+						'label' => 'First',
+						'url'   => '/a',
+					),
+					array(
+						'label' => 'Second',
+						'url'   => '/b',
+					),
+				),
+			)
+		);
+
+		$this->assertSame( array( 'A', 'B' ), array_column( $entry->rows, 'value' ) );
+		$this->assertSame( array( 'First' ), array_column( $entry->links, 'label' ) );
+	}
+
+	public function test_the_other_styles_keep_every_row_and_link(): void {
+		foreach ( array( 'table', 'card', 'detail' ) as $preset ) {
+			$entry = $this->entry(
+				array(
+					'preset' => $preset,
+					'rows'   => array(
+						array(
+							'label' => 'One',
+							'value' => '1',
+						),
+						array(
+							'label' => 'Two',
+							'value' => '2',
+						),
+						array(
+							'label' => 'Three',
+							'value' => '3',
+						),
+					),
+					'links'  => array(
+						array( 'url' => '/a' ),
+						array( 'url' => '/b' ),
+					),
+				)
+			);
+
+			$this->assertCount( 3, $entry->rows, $preset );
+			$this->assertCount( 2, $entry->links, $preset );
+		}
+	}
 }

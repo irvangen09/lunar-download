@@ -1,0 +1,41 @@
+// Table style: label and value in rows under a heavy top rule.
+
+.lunar-dl-entry.lunar-dl-entry--table {
+
+	.lunar-dl-entry__media {
+		margin-block-end: var(--lunar-dl-space-4);
+	}
+
+	.lunar-dl-entry__rows {
+		border-block-start: var(--lunar-dl-border-width-strong) solid var(--lunar-dl-color-primary);
+	}
+
+	.lunar-dl-entry__row {
+		display: flex;
+		align-items: center;
+		min-height: calc(var(--lunar-dl-unit) * 2.75);
+		border-block-end: var(--lunar-dl-border);
+	}
+
+	.lunar-dl-entry__row dt {
+		display: flex;
+		flex: 0 0 calc(var(--lunar-dl-unit) * 7);
+		align-items: center;
+		align-self: stretch;
+		padding: var(--lunar-dl-space-2) var(--lunar-dl-space-3);
+		background: var(--lunar-dl-color-surface);
+		font-weight: var(--lunar-dl-font-weight-strong);
+		overflow-wrap: anywhere;
+	}
+
+	.lunar-dl-entry__row dd {
+		flex: 1 1 auto;
+		min-width: 0;
+		padding: var(--lunar-dl-space-2) var(--lunar-dl-space-3);
+		overflow-wrap: anywhere;
+	}
+
+	.lunar-dl-entry__links {
+		margin-block-start: var(--lunar-dl-space-4);
+	}
+}

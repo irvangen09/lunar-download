@@ -1,0 +1,48 @@
+// Detail style: the image, a grid of boxed values with the label above each,
+// and every button side by side.
+
+.lunar-dl-entry.lunar-dl-entry--detail {
+	display: flex;
+	flex-direction: column;
+	gap: var(--lunar-dl-space-4);
+
+	.lunar-dl-entry__image {
+		width: 100%;
+	}
+
+	// As many columns as fit; one column on a narrow screen.
+	.lunar-dl-entry__rows {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(calc(var(--lunar-dl-unit) * 9), 1fr));
+		gap: var(--lunar-dl-space-2);
+	}
+
+	.lunar-dl-entry__row {
+		min-width: 0;
+		padding: var(--lunar-dl-space-2) var(--lunar-dl-space-3);
+		border: var(--lunar-dl-border);
+		border-radius: var(--lunar-dl-radius);
+	}
+
+	.lunar-dl-entry__row dt {
+		margin-block-end: var(--lunar-dl-space-1);
+		color: var(--lunar-dl-color-text-muted);
+		font-size: var(--lunar-dl-font-size-sm);
+	}
+
+	.lunar-dl-entry__row dd {
+		overflow-wrap: anywhere;
+	}
+
+	.lunar-dl-entry__links {
+		gap: var(--lunar-dl-space-3);
+	}
+
+	.lunar-dl-entry__links li {
+		flex: 1 1 calc(var(--lunar-dl-unit) * 9);
+	}
+
+	.lunar-dl-entry__links a.lunar-dl-button {
+		width: 100%;
+	}
+}

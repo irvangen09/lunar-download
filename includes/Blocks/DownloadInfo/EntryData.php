@@ -17,6 +17,10 @@ class EntryData {
 	private const VALUE_MAX = 200;
 	private const SLUG_MAX  = 40;
 
+	// The compact style shows the first rows and one button.
+	private const COMPACT_ROWS  = 2;
+	private const COMPACT_LINKS = 1;
+
 	public string $name;
 
 	public int $image_id;
@@ -67,6 +71,12 @@ class EntryData {
 
 		$entry->rows  = self::clean_rows( $attributes['rows'] ?? array(), $context );
 		$entry->links = self::clean_links( $attributes['links'] ?? array(), $context );
+
+		// What the style does not show is dropped here, so that the structured data matches the page.
+		if ( 'compact' === $entry->preset ) {
+			$entry->rows  = array_slice( $entry->rows, 0, self::COMPACT_ROWS );
+			$entry->links = array_slice( $entry->links, 0, self::COMPACT_LINKS );
+		}
 
 		return $entry;
 	}

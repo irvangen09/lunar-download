@@ -1,0 +1,57 @@
+// Card style: a bordered card with the image on top, values as chips and the
+// first link as a full-width button.
+
+.lunar-dl-entry.lunar-dl-entry--card {
+	overflow: hidden;
+	border: var(--lunar-dl-border);
+	border-radius: var(--lunar-dl-radius);
+
+	.lunar-dl-entry__image {
+		width: 100%;
+		border-radius: 0;
+	}
+
+	.lunar-dl-entry__rows {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--lunar-dl-space-2);
+		margin: var(--lunar-dl-space-4) var(--lunar-dl-space-4) 0;
+	}
+
+	.lunar-dl-entry__row {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--lunar-dl-space-1);
+		padding: var(--lunar-dl-space-1) var(--lunar-dl-space-2);
+		border-radius: var(--lunar-dl-radius);
+		background: var(--lunar-dl-color-surface);
+		font-size: var(--lunar-dl-font-size-sm);
+	}
+
+	.lunar-dl-entry__row dt {
+		font-weight: var(--lunar-dl-font-weight-strong);
+	}
+
+	// The colon is drawn, and an empty alternative keeps it out of speech.
+	.lunar-dl-entry__row dt::after {
+		content: ":";
+		content: ":" / "";
+	}
+
+	.lunar-dl-entry__row dd {
+		min-width: 0;
+		overflow-wrap: anywhere;
+	}
+
+	.lunar-dl-entry__links {
+		margin: var(--lunar-dl-space-4);
+	}
+
+	.lunar-dl-entry__links li:first-child {
+		flex: 1 1 100%;
+	}
+
+	.lunar-dl-entry__links li:first-child a.lunar-dl-button {
+		width: 100%;
+	}
+}
