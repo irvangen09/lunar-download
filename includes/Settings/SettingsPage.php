@@ -4,7 +4,7 @@ namespace LunarDownload\Settings;
 
 class SettingsPage {
 
-	private const SLUG   = 'lunar-download';
+	public const SLUG    = 'lunar-download';
 	private const HANDLE = 'lunar-download-admin';
 
 	private string $hook_suffix = '';
