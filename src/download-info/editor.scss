@@ -12,9 +12,61 @@
 		font-weight: var(--lunar-dl-font-weight-strong);
 	}
 
-	.lunar-dl-editor__notice {
-		margin: var(--lunar-dl-space-2) 0 0;
+	.lunar-dl-editor__summary {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--lunar-dl-space-2) var(--lunar-dl-space-4);
+		margin: var(--lunar-dl-space-3) 0 0;
+		padding: 0;
+	}
+
+	.lunar-dl-editor__summary div {
+		margin: 0;
+		padding: 0;
+	}
+
+	.lunar-dl-editor__summary dt {
+		margin: 0;
+		padding: 0;
 		color: var(--lunar-dl-color-text-muted);
 		font-size: var(--lunar-dl-font-size-sm);
+	}
+
+	.lunar-dl-editor__summary dd {
+		margin: 0;
+		padding: 0;
+		font-weight: var(--lunar-dl-font-weight-strong);
+	}
+
+	.lunar-dl-editor__hint {
+		margin: var(--lunar-dl-space-3) 0 0;
+		color: var(--lunar-dl-color-text-muted);
+		font-size: var(--lunar-dl-font-size-sm);
+	}
+}
+
+// The sidebar uses the WordPress admin look, not the design tokens.
+.lunar-dl-image-picker {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin-bottom: 16px;
+
+	.lunar-dl-image-picker__preview {
+		display: block;
+		max-width: 100%;
+		height: auto;
+		border: 1px solid #dcdcde;
+		border-radius: 2px;
+	}
+
+	.lunar-dl-image-picker__missing {
+		margin: 0;
+	}
+
+	.lunar-dl-image-picker__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
 	}
 }

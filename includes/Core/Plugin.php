@@ -2,6 +2,7 @@
 
 namespace LunarDownload\Core;
 
+use LunarDownload\Blocks\DownloadInfo\EditorData;
 use LunarDownload\Blocks\DownloadInfo\Renderer;
 use LunarDownload\Services\DesignTokens;
 use LunarDownload\Settings\Settings;
@@ -23,6 +24,7 @@ class Plugin {
 
 		if ( is_admin() ) {
 			( new SettingsPage() )->register();
+			( new EditorData( $settings ) )->register();
 		}
 	}
 }
