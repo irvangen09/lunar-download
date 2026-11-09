@@ -67,6 +67,21 @@ export function createHarness() {
 			} );
 		},
 
+		// Chooses an option of a <select> like a user would.
+		choose( select, value ) {
+			const setter = Object.getOwnPropertyDescriptor(
+				window.HTMLSelectElement.prototype,
+				'value'
+			).set;
+
+			act( () => {
+				setter.call( select, value );
+				select.dispatchEvent(
+					new Event( 'change', { bubbles: true } )
+				);
+			} );
+		},
+
 		async submit() {
 			await act( async () => {
 				container.querySelector( 'form' ).dispatchEvent(
