@@ -1,0 +1,2216 @@
+{
+    "siteHost": "example.com",
+    "ownDomains": [
+        "partner.net"
+    ],
+    "defaultLinkLabel": "Download",
+    "fields": [
+        {
+            "slug": "kredit",
+            "label": "Kredit",
+            "type": "text",
+            "schema_role": "creator",
+            "archived": false
+        },
+        {
+            "slug": "ukuran",
+            "label": "Ukuran",
+            "type": "text",
+            "schema_role": "file_size",
+            "archived": false
+        },
+        {
+            "slug": "tipe-bus",
+            "label": "Tipe Bus",
+            "type": "select",
+            "options": [
+                "Yudistira HD",
+                "Sadewa SHD"
+            ],
+            "schema_role": null,
+            "archived": false
+        },
+        {
+            "slug": "tanggal",
+            "label": "Tanggal",
+            "type": "date",
+            "schema_role": "date_modified",
+            "archived": false
+        },
+        {
+            "slug": "lama",
+            "label": "Lama",
+            "type": "text",
+            "schema_role": null,
+            "archived": true
+        }
+    ],
+    "cases": [
+        {
+            "name": "empty attributes",
+            "attributes": [],
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "name is cleaned",
+            "attributes": {
+                "name": "  Aneka\nBintang\t ",
+                "rows": [
+                    {
+                        "field": "kredit",
+                        "value": "x"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "Aneka Bintang",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "x",
+                        "type": "text"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "name is cut at 200 characters",
+            "attributes": {
+                "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "expected": {
+                "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "alt is cleaned and cut",
+            "attributes": {
+                "imageAlt": " Tampak\nsamping bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "imageId": 7
+            },
+            "expected": {
+                "name": "",
+                "imageId": 7,
+                "imageAlt": "Tampak samping bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "image id variant 0",
+            "attributes": {
+                "imageId": 12
+            },
+            "expected": {
+                "name": "",
+                "imageId": 12,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "image id variant 1",
+            "attributes": {
+                "imageId": "12"
+            },
+            "expected": {
+                "name": "",
+                "imageId": 12,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "image id variant 2",
+            "attributes": {
+                "imageId": 0
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "image id variant 3",
+            "attributes": {
+                "imageId": -5
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "image id variant 4",
+            "attributes": {
+                "imageId": "-5"
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "image id variant 5",
+            "attributes": {
+                "imageId": "abc"
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "image id variant 6",
+            "attributes": {
+                "imageId": null
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "image id variant 7",
+            "attributes": {
+                "imageId": [
+                    1
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "image id variant 8",
+            "attributes": {
+                "imageId": "007"
+            },
+            "expected": {
+                "name": "",
+                "imageId": 7,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "preset 'table'",
+            "attributes": {
+                "preset": "table",
+                "rows": [
+                    {
+                        "field": "kredit",
+                        "value": "x"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "x",
+                        "type": "text"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "preset 'card'",
+            "attributes": {
+                "preset": "card",
+                "rows": [
+                    {
+                        "field": "kredit",
+                        "value": "x"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "card",
+                "rows": [
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "x",
+                        "type": "text"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "preset 'compact'",
+            "attributes": {
+                "preset": "compact",
+                "rows": [
+                    {
+                        "field": "kredit",
+                        "value": "x"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "compact",
+                "rows": [
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "x",
+                        "type": "text"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "preset 'detail'",
+            "attributes": {
+                "preset": "detail",
+                "rows": [
+                    {
+                        "field": "kredit",
+                        "value": "x"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "detail",
+                "rows": [
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "x",
+                        "type": "text"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "preset 'Card'",
+            "attributes": {
+                "preset": "Card",
+                "rows": [
+                    {
+                        "field": "kredit",
+                        "value": "x"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "x",
+                        "type": "text"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "preset 'list'",
+            "attributes": {
+                "preset": "list",
+                "rows": [
+                    {
+                        "field": "kredit",
+                        "value": "x"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "x",
+                        "type": "text"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "preset ''",
+            "attributes": {
+                "preset": "",
+                "rows": [
+                    {
+                        "field": "kredit",
+                        "value": "x"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "x",
+                        "type": "text"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "preset None",
+            "attributes": {
+                "preset": null,
+                "rows": [
+                    {
+                        "field": "kredit",
+                        "value": "x"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "x",
+                        "type": "text"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "preset 5",
+            "attributes": {
+                "preset": 5,
+                "rows": [
+                    {
+                        "field": "kredit",
+                        "value": "x"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "x",
+                        "type": "text"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "preset ['card']",
+            "attributes": {
+                "preset": [
+                    "card"
+                ],
+                "rows": [
+                    {
+                        "field": "kredit",
+                        "value": "x"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "x",
+                        "type": "text"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "field row resolves the registry",
+            "attributes": {
+                "rows": [
+                    {
+                        "field": "kredit",
+                        "value": "BlahBloh"
+                    },
+                    {
+                        "field": "tanggal",
+                        "value": "2026-10-30"
+                    },
+                    {
+                        "field": "tipe-bus",
+                        "value": "Sadewa SHD"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "BlahBloh",
+                        "type": "text"
+                    },
+                    {
+                        "slug": "tanggal",
+                        "label": "Tanggal",
+                        "value": "2026-10-30",
+                        "type": "date"
+                    },
+                    {
+                        "slug": "tipe-bus",
+                        "label": "Tipe Bus",
+                        "value": "Sadewa SHD",
+                        "type": "select"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "archived field still resolves",
+            "attributes": {
+                "rows": [
+                    {
+                        "field": "lama",
+                        "value": "x"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": "lama",
+                        "label": "Lama",
+                        "value": "x",
+                        "type": "text"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "unknown field shows its slug",
+            "attributes": {
+                "rows": [
+                    {
+                        "field": "hilang",
+                        "value": "x"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": "hilang",
+                        "label": "hilang",
+                        "value": "x",
+                        "type": "text"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "custom row",
+            "attributes": {
+                "rows": [
+                    {
+                        "label": " Catatan ",
+                        "value": "Sekali pakai"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": null,
+                        "label": "Catatan",
+                        "value": "Sekali pakai",
+                        "type": "custom"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "field wins over label",
+            "attributes": {
+                "rows": [
+                    {
+                        "field": "kredit",
+                        "label": "Lain",
+                        "value": "x"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "x",
+                        "type": "text"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "empty and missing values are dropped",
+            "attributes": {
+                "rows": [
+                    {
+                        "field": "kredit",
+                        "value": ""
+                    },
+                    {
+                        "field": "kredit",
+                        "value": "   "
+                    },
+                    {
+                        "field": "kredit"
+                    },
+                    {
+                        "field": "kredit",
+                        "value": 12
+                    },
+                    {
+                        "field": "kredit",
+                        "value": null
+                    },
+                    {
+                        "field": "kredit",
+                        "value": "Kept"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "Kept",
+                        "type": "text"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "rows without label or field are dropped",
+            "attributes": {
+                "rows": [
+                    {
+                        "value": "x"
+                    },
+                    {
+                        "label": "  ",
+                        "value": "x"
+                    },
+                    {
+                        "label": "",
+                        "value": "x"
+                    },
+                    "text",
+                    5,
+                    null,
+                    [
+                        "a"
+                    ],
+                    {
+                        "label": "Ok",
+                        "value": "y"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": null,
+                        "label": "Ok",
+                        "value": "y",
+                        "type": "custom"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "row text is cut",
+            "attributes": {
+                "rows": [
+                    {
+                        "label": "llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll",
+                        "value": "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": null,
+                        "label": "llllllllllllllllllllllllllllllllllllllllllllllllllllllllllll",
+                        "value": "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv",
+                        "type": "custom"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "multibyte text is cut by characters",
+            "attributes": {
+                "rows": [
+                    {
+                        "label": "éééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé",
+                        "value": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": null,
+                        "label": "éééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé",
+                        "value": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+                        "type": "custom"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "control characters become spaces",
+            "attributes": {
+                "rows": [
+                    {
+                        "label": "A\tB",
+                        "value": "one\ntwo\u0000threefour"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": null,
+                        "label": "A B",
+                        "value": "one two three four",
+                        "type": "custom"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "only ascii whitespace is trimmed",
+            "attributes": {
+                "rows": [
+                    {
+                        "label": " Label ",
+                        "value": " nilai "
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": null,
+                        "label": " Label ",
+                        "value": " nilai ",
+                        "type": "custom"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "slug is cut at 40 characters",
+            "attributes": {
+                "rows": [
+                    {
+                        "field": "ssssssssssssssssssssssssssssssssssssssssssssssssss",
+                        "value": "x"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [
+                    {
+                        "slug": "ssssssssssssssssssssssssssssssssssssssss",
+                        "label": "ssssssssssssssssssssssssssssssssssssssss",
+                        "value": "x",
+                        "type": "text"
+                    }
+                ],
+                "links": []
+            }
+        },
+        {
+            "name": "rows and links that are not lists",
+            "attributes": {
+                "rows": "text",
+                "links": 5
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "rows null",
+            "attributes": {
+                "rows": null,
+                "links": null
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "compact keeps two rows and one link",
+            "attributes": {
+                "preset": "compact",
+                "rows": [
+                    {
+                        "field": "kredit",
+                        "value": "1"
+                    },
+                    {
+                        "field": "kredit",
+                        "value": "2"
+                    },
+                    {
+                        "field": "ukuran",
+                        "value": "3"
+                    }
+                ],
+                "links": [
+                    {
+                        "url": "/a",
+                        "label": "A"
+                    },
+                    {
+                        "url": "/b",
+                        "label": "B"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "compact",
+                "rows": [
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "1",
+                        "type": "text"
+                    },
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "2",
+                        "type": "text"
+                    }
+                ],
+                "links": [
+                    {
+                        "label": "A",
+                        "url": "/a",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "compact counts only shown rows and links",
+            "attributes": {
+                "preset": "compact",
+                "rows": [
+                    {
+                        "field": "kredit",
+                        "value": ""
+                    },
+                    {
+                        "field": "kredit",
+                        "value": "1"
+                    },
+                    {
+                        "label": "Dua",
+                        "value": "2"
+                    },
+                    {
+                        "label": "Tiga",
+                        "value": "3"
+                    }
+                ],
+                "links": [
+                    {
+                        "url": "javascript:alert(1)"
+                    },
+                    {
+                        "url": "/a",
+                        "label": "A"
+                    },
+                    {
+                        "url": "/b",
+                        "label": "B"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "compact",
+                "rows": [
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "1",
+                        "type": "text"
+                    },
+                    {
+                        "slug": null,
+                        "label": "Dua",
+                        "value": "2",
+                        "type": "custom"
+                    }
+                ],
+                "links": [
+                    {
+                        "label": "A",
+                        "url": "/a",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "other styles keep everything",
+            "attributes": {
+                "preset": "detail",
+                "rows": [
+                    {
+                        "field": "kredit",
+                        "value": "1"
+                    },
+                    {
+                        "field": "kredit",
+                        "value": "2"
+                    },
+                    {
+                        "field": "ukuran",
+                        "value": "3"
+                    }
+                ],
+                "links": [
+                    {
+                        "url": "/a"
+                    },
+                    {
+                        "url": "/b"
+                    },
+                    {
+                        "url": "/c"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "detail",
+                "rows": [
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "1",
+                        "type": "text"
+                    },
+                    {
+                        "slug": "kredit",
+                        "label": "Kredit",
+                        "value": "2",
+                        "type": "text"
+                    },
+                    {
+                        "slug": "ukuran",
+                        "label": "Ukuran",
+                        "value": "3",
+                        "type": "text"
+                    }
+                ],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "/a",
+                        "newTab": false
+                    },
+                    {
+                        "label": "Download",
+                        "url": "/b",
+                        "newTab": false
+                    },
+                    {
+                        "label": "Download",
+                        "url": "/c",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "link labels",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "/a"
+                    },
+                    {
+                        "url": "/b",
+                        "label": ""
+                    },
+                    {
+                        "url": "/c",
+                        "label": "  Bersih  "
+                    },
+                    {
+                        "url": "/d",
+                        "label": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                    },
+                    {
+                        "url": "/e",
+                        "label": 5
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "/a",
+                        "newTab": false
+                    },
+                    {
+                        "label": "Download",
+                        "url": "/b",
+                        "newTab": false
+                    },
+                    {
+                        "label": "Bersih",
+                        "url": "/c",
+                        "newTab": false
+                    },
+                    {
+                        "label": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                        "url": "/d",
+                        "newTab": false
+                    },
+                    {
+                        "label": "Download",
+                        "url": "/e",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "new tab needs a real boolean",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "/a",
+                        "newTab": true
+                    },
+                    {
+                        "url": "/b",
+                        "newTab": "true"
+                    },
+                    {
+                        "url": "/c",
+                        "newTab": 1
+                    },
+                    {
+                        "url": "/d",
+                        "newTab": false
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "/a",
+                        "newTab": true
+                    },
+                    {
+                        "label": "Download",
+                        "url": "/b",
+                        "newTab": false
+                    },
+                    {
+                        "label": "Download",
+                        "url": "/c",
+                        "newTab": false
+                    },
+                    {
+                        "label": "Download",
+                        "url": "/d",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "good link 0",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://drive.google.com/file/d/1"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "https://drive.google.com/file/d/1",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "good link 1",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "HTTP://EXAMPLE.COM/A"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "HTTP://EXAMPLE.COM/A",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "good link 2",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "http://example.com:8080/a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "http://example.com:8080/a",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "good link 3",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://example.com:/a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "https://example.com:/a",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "good link 4",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://example.com:65535/a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "https://example.com:65535/a",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "good link 5",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://[::1]/a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "https://[::1]/a",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "good link 6",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://[::1]:80/a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "https://[::1]:80/a",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "good link 7",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://example.com?x=1#y"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "https://example.com?x=1#y",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "good link 8",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "/"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "/",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "good link 9",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "/download/a.zip"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "/download/a.zip",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "good link 10",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "/a?b=1#c"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "/a?b=1#c",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "good link 11",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "  https://example.com/a  "
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "https://example.com/a",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "good link 12",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "\thttps://example.com/b\n"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "https://example.com/b",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "good link 13",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://exa_mple.com/a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "https://exa_mple.com/a",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "good link 14",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://xn--bcher-kva.example/a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "https://xn--bcher-kva.example/a",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "good link 15",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://example.com/a b"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "https://example.com/a b",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "bad link 0",
+            "attributes": {
+                "links": [
+                    {
+                        "url": ""
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 1",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "   "
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 2",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "javascript:alert(1)"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 3",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "JaVaScRiPt:alert(1)"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 4",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "java\tscript:alert(1)"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 5",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "data:text/html;base64,AAAA"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 6",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "ftp://example.com/a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 7",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "mailto:a@b.c"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 8",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "//evil.net/a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 9",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "/\\evil.net/a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 10",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://evil.net\\@example.com/a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 11",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "example.com/file.zip"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 12",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "file.zip"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 13",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "#top"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 14",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "?a=1"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 15",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https:example.com/a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 16",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 17",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "http:///path"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 18",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://user@example.com/a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 19",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://user:pass@example.com/a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 20",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://exa mple.com/a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 21",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://example.com/a\nb"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 22",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://exa\u0000mple.com"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 23",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://example.com:99999/a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 24",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://example.com:abc/a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 25",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://:80/a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 26",
+            "attributes": {
+                "links": [
+                    {
+                        "url": " /a"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "bad link 27",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "/a "
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "/a ",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "bad link 28",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://example.com/"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": []
+            }
+        },
+        {
+            "name": "links of the wrong type",
+            "attributes": {
+                "links": [
+                    "text",
+                    5,
+                    null,
+                    [
+                        "a"
+                    ],
+                    {
+                        "label": "No url"
+                    },
+                    {
+                        "url": 12
+                    },
+                    {
+                        "url": null
+                    },
+                    {
+                        "url": [
+                            "/a"
+                        ]
+                    },
+                    {
+                        "url": "/kept"
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "/kept",
+                        "newTab": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "rel mode is ignored by the page",
+            "attributes": {
+                "links": [
+                    {
+                        "url": "https://other.net/a",
+                        "relMode": "follow"
+                    },
+                    {
+                        "url": "/b",
+                        "relMode": [
+                            "x"
+                        ]
+                    }
+                ]
+            },
+            "expected": {
+                "name": "",
+                "imageId": 0,
+                "imageAlt": "",
+                "preset": "table",
+                "rows": [],
+                "links": [
+                    {
+                        "label": "Download",
+                        "url": "https://other.net/a",
+                        "newTab": false
+                    },
+                    {
+                        "label": "Download",
+                        "url": "/b",
+                        "newTab": false
+                    }
+                ]
+            }
+        }
+    ]
+}

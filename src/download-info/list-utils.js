@@ -201,22 +201,29 @@ export function selectChoices( options, value ) {
 	return choices;
 }
 
+// Same characters as PHP trim(), so that the editor and the server agree on edge cases.
+const TRIM_PATTERN = /^[ \t\n\r\0\x0B]+|[ \t\n\r\0\x0B]+$/g;
+
+export function trimAscii( text ) {
+	return String( text ).replace( TRIM_PATTERN, '' );
+}
+
 /**
- * Checks a link address only to warn the author early; the server decides
- * what is shown. Allowed: http, https, and a path that starts with one slash.
+ * Checks a link address the way the server does. The editor uses it to warn
+ * the author early and to leave out links in the preview.
+ * Allowed: http, https, and a path that starts with one slash.
  *
  * @param {string} url Address as typed.
  * @return {string} '' when it is fine, 'empty' or 'invalid'.
  */
 export function linkProblem( url ) {
-	const value = String( url || '' ).trim();
+	const value = trimAscii( 'string' === typeof url ? url : '' );
 
 	if ( '' === value ) {
 		return 'empty';
 	}
 
 	// Control characters and backslashes can hide the real destination.
-
 	if ( /[\x00-\x1f\x7f\\]/.test( value ) ) {
 		return 'invalid';
 	}
@@ -227,8 +234,21 @@ export function linkProblem( url ) {
 
 	const match = value.match( /^https?:\/\/([^/?#]*)/i );
 
-	if ( ! match || '' === match[ 1 ] || /[@\s]/.test( match[ 1 ] ) ) {
+	// A user name or a space makes the address unsafe or broken.
+	if ( ! match || '' === match[ 1 ] || /[@ \t\n\r\f\v]/.test( match[ 1 ] ) ) {
 		return 'invalid';
+	}
+
+	const authority = match[ 1 ];
+	const colon = authority.lastIndexOf( ':' );
+
+	if ( colon > -1 && ! authority.endsWith( ']' ) ) {
+		const host = authority.slice( 0, colon );
+		const port = authority.slice( colon + 1 );
+
+		if ( '' === host || ! /^\d*$/.test( port ) || Number( port ) > 65535 ) {
+			return 'invalid';
+		}
 	}
 
 	return '';
