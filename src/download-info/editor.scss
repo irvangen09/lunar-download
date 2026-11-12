@@ -1,21 +1,25 @@
 .lunar-dl-editor {
-	box-sizing: border-box;
-	padding: var(--lunar-dl-space-4);
-	border: var(--lunar-dl-border);
-	border-radius: var(--lunar-dl-radius);
 	font-family: inherit;
-	font-size: var(--lunar-dl-font-size-md);
 	line-height: var(--lunar-dl-line-height-tight);
 
-	.lunar-dl-editor__title {
+	// The preview shows the entry as the page does; this note stands in for
+	// an entry with nothing to show.
+	.lunar-dl-editor__note {
 		margin: 0;
-		font-weight: var(--lunar-dl-font-weight-strong);
-	}
-
-	.lunar-dl-editor__meta {
-		margin: var(--lunar-dl-space-1) 0 0;
+		padding: var(--lunar-dl-space-4);
+		border: var(--lunar-dl-border);
+		border-radius: var(--lunar-dl-radius);
 		color: var(--lunar-dl-color-text-muted);
 		font-size: var(--lunar-dl-font-size-sm);
+	}
+
+	.lunar-dl-editor__panel {
+		box-sizing: border-box;
+		margin-block-start: var(--lunar-dl-space-3);
+		padding: var(--lunar-dl-space-4);
+		border: var(--lunar-dl-border);
+		border-radius: var(--lunar-dl-radius);
+		font-size: var(--lunar-dl-font-size-md);
 	}
 
 	.lunar-dl-editor__section {
