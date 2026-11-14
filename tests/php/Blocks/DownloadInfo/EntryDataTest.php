@@ -119,18 +119,20 @@ class EntryDataTest extends TestCase {
 		$this->assertSame(
 			array(
 				array(
-					'slug'  => 'kredit',
-					'label' => 'Kredit',
-					'value' => 'BlahBloh',
-					'type'  => 'text',
-					'role'  => 'creator',
+					'slug'     => 'kredit',
+					'label'    => 'Kredit',
+					'value'    => 'BlahBloh',
+					'type'     => 'text',
+					'role'     => 'creator',
+					'archived' => false,
 				),
 				array(
-					'slug'  => 'tanggal',
-					'label' => 'Tanggal',
-					'value' => '2026-10-30',
-					'type'  => 'date',
-					'role'  => 'date_modified',
+					'slug'     => 'tanggal',
+					'label'    => 'Tanggal',
+					'value'    => '2026-10-30',
+					'type'     => 'date',
+					'role'     => 'date_modified',
+					'archived' => false,
 				),
 			),
 			$entry->rows
@@ -151,6 +153,7 @@ class EntryDataTest extends TestCase {
 
 		$this->assertSame( 'Lama', $row['label'] );
 		$this->assertSame( 'select', $row['type'] );
+		$this->assertTrue( $row['archived'] );
 	}
 
 	public function test_an_unknown_field_is_shown_under_its_slug_without_a_role(): void {
@@ -184,11 +187,12 @@ class EntryDataTest extends TestCase {
 
 		$this->assertSame(
 			array(
-				'slug'  => null,
-				'label' => 'Catatan',
-				'value' => 'Hanya sekali',
-				'type'  => 'custom',
-				'role'  => null,
+				'slug'     => null,
+				'label'    => 'Catatan',
+				'value'    => 'Hanya sekali',
+				'type'     => 'custom',
+				'role'     => null,
+				'archived' => false,
 			),
 			$row
 		);

@@ -30,7 +30,8 @@ class EntryData {
 	public string $preset;
 
 	/**
-	 * Each row has slug (null for a custom label), label, value, type and role.
+	 * Each row has slug (null for a custom label), label, value, type, role and
+	 * archived (whether its field is archived).
 	 * The type is a field type, or 'custom'.
 	 *
 	 * @var array[]
@@ -113,11 +114,12 @@ class EntryData {
 				$field   = $context->field( $slug );
 				$label   = null === $field ? $slug : TextCleaner::single_line( $field['label'] ?? '', self::LABEL_MAX );
 				$clean[] = array(
-					'slug'  => $slug,
-					'label' => '' === $label ? $slug : $label,
-					'value' => $value,
-					'type'  => $field['type'] ?? 'text',
-					'role'  => $field['schema_role'] ?? null,
+					'slug'     => $slug,
+					'label'    => '' === $label ? $slug : $label,
+					'value'    => $value,
+					'type'     => $field['type'] ?? 'text',
+					'role'     => $field['schema_role'] ?? null,
+					'archived' => true === ( $field['archived'] ?? false ),
 				);
 
 				continue;
@@ -127,11 +129,12 @@ class EntryData {
 
 			if ( '' !== $label ) {
 				$clean[] = array(
-					'slug'  => null,
-					'label' => $label,
-					'value' => $value,
-					'type'  => 'custom',
-					'role'  => null,
+					'slug'     => null,
+					'label'    => $label,
+					'value'    => $value,
+					'type'     => 'custom',
+					'role'     => null,
+					'archived' => false,
 				);
 			}
 		}
