@@ -4,6 +4,7 @@ namespace LunarDownload\Blocks\DownloadInfo;
 
 use DateTimeZone;
 use LunarDownload\Services\LinkPolicy;
+use LunarDownload\Services\SchemaBuilder;
 use LunarDownload\Settings\Settings;
 
 class Renderer {
@@ -27,6 +28,15 @@ class Renderer {
 	}
 
 	/**
+	 * The structured data of the entries rendered in this request.
+	 *
+	 * @return array[]
+	 */
+	public static function schema_nodes(): array {
+		return null === self::$shared ? array() : self::$shared->schema_nodes();
+	}
+
+	/**
 	 * Returns the markup of one download entry, or '' when there is nothing to show.
 	 *
 	 * @param array $attributes Block attributes.
@@ -40,6 +50,8 @@ class Renderer {
 		if ( '' === $media . $rows . $links ) {
 			return '';
 		}
+
+		$this->collect_schema( $entry, '' !== $media );
 
 		return sprintf(
 			'<article %s>%s%s%s</article>',
@@ -102,16 +114,27 @@ class Renderer {
 		);
 	}
 
+	/**
+	 * The links that are shown: those with an address that WordPress accepts.
+	 *
+	 * @param EntryData $entry The entry.
+	 * @return array[]
+	 */
+	private function shown_links( EntryData $entry ): array {
+		return array_values(
+			array_filter(
+				$entry->links,
+				static fn( $link ) => '' !== esc_url( $link['url'] )
+			)
+		);
+	}
+
 	private function links( EntryData $entry ): string {
 		$items  = '';
 		$notice = __( '(opens in a new tab)', 'lunar-download' );
 
-		foreach ( $entry->links as $link ) {
+		foreach ( $this->shown_links( $entry ) as $link ) {
 			$href = esc_url( $link['url'] );
-
-			if ( '' === $href ) {
-				continue;
-			}
 
 			$attributes = 'class="lunar-dl-button" href="' . $href . '"';
 
@@ -139,6 +162,36 @@ class Renderer {
 		}
 
 		return '' === $items ? '' : '<ul class="lunar-dl-entry__links">' . $items . '</ul>';
+	}
+
+	/**
+	 * Hands what the entry shows to the structured data of the page.
+	 *
+	 * @param EntryData $entry     The entry.
+	 * @param bool      $has_image Whether the image is shown.
+	 */
+	private function collect_schema( EntryData $entry, bool $has_image ): void {
+		$image_url = $has_image ? wp_get_attachment_image_url( $entry->image_id, 'full' ) : '';
+
+		$node = ( new SchemaBuilder() )->build(
+			array(
+				'name'      => $entry->name,
+				'image_url' => is_string( $image_url ) ? $image_url : '',
+				'rows'      => $entry->rows,
+				'links'     => array_map(
+					static fn( $link ) => array(
+						'label' => $link['label'],
+						// A path on this site becomes a full address, so that it does not depend on the page.
+						'url'   => 0 === strpos( $link['url'], '/' ) ? home_url( $link['url'] ) : $link['url'],
+					),
+					$this->shown_links( $entry )
+				),
+			)
+		);
+
+		if ( null !== $node ) {
+			$this->context->add_schema( $node );
+		}
 	}
 
 	/**

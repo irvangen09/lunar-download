@@ -444,4 +444,227 @@ class RendererTest extends TestCase {
 			$this->assertSame( 2, substr_count( $html, '<a ' ), $preset );
 		}
 	}
+
+	private function nodes_after( array ...$entries ): array {
+		$context  = new RenderContext(
+			array(
+				array(
+					'slug'        => 'kredit',
+					'label'       => 'Kredit',
+					'type'        => 'text',
+					'schema_role' => 'creator',
+					'archived'    => false,
+				),
+				array(
+					'slug'        => 'ukuran',
+					'label'       => 'Ukuran',
+					'type'        => 'text',
+					'schema_role' => 'file_size',
+					'archived'    => false,
+				),
+				array(
+					'slug'        => 'tanggal',
+					'label'       => 'Tanggal',
+					'type'        => 'date',
+					'schema_role' => 'date_modified',
+					'archived'    => false,
+				),
+			),
+			new LinkPolicy( 'example.com' ),
+			'Download',
+			'Y-m-d'
+		);
+		$renderer = new Renderer( $context );
+
+		foreach ( $entries as $attributes ) {
+			$renderer->render( $attributes );
+		}
+
+		return $context->schema_nodes();
+	}
+
+	public function test_a_rendered_entry_adds_its_structured_data(): void {
+		$nodes = $this->nodes_after(
+			array(
+				'name'    => 'Aneka Bintang',
+				'imageId' => 7,
+				'rows'    => array(
+					array(
+						'field' => 'kredit',
+						'value' => 'BlahBloh',
+					),
+					array(
+						'field' => 'ukuran',
+						'value' => '2,4 MB',
+					),
+					array(
+						'field' => 'tanggal',
+						'value' => '2026-10-30',
+					),
+				),
+				'links'   => array(
+					array(
+						'label' => 'Bersih',
+						'url'   => 'https://drive.google.com/file/d/1',
+					),
+				),
+			)
+		);
+
+		$this->assertSame(
+			array(
+				array(
+					'@type'           => 'CreativeWork',
+					'name'            => 'Aneka Bintang',
+					'image'           => 'https://example.test/uploads/7-full.jpg',
+					'creator'         => 'BlahBloh',
+					'dateModified'    => '2026-10-30',
+					'associatedMedia' => array(
+						array(
+							'@type'       => 'MediaObject',
+							'name'        => 'Bersih',
+							'url'         => 'https://drive.google.com/file/d/1',
+							'contentSize' => '2,4 MB',
+						),
+					),
+				),
+			),
+			$nodes
+		);
+	}
+
+	public function test_a_path_on_this_site_becomes_a_full_address(): void {
+		$nodes = $this->nodes_after(
+			array(
+				'name'  => 'X',
+				'links' => array( array( 'url' => '/unduh/a?x=1#y' ), array( 'url' => 'https://other.net/b' ) ),
+			)
+		);
+
+		$this->assertSame(
+			array( 'https://example.test/unduh/a?x=1#y', 'https://other.net/b' ),
+			array_column( $nodes[0]['associatedMedia'], 'url' )
+		);
+	}
+
+	public function test_an_entry_without_a_name_adds_nothing(): void {
+		$this->assertSame( array(), $this->nodes_after( array( 'links' => array( array( 'url' => '/a' ) ) ) ) );
+	}
+
+	public function test_an_entry_that_shows_nothing_adds_nothing(): void {
+		$this->assertSame(
+			array(),
+			$this->nodes_after(
+				array(
+					'name'  => 'X',
+					'links' => array( array( 'url' => 'javascript:alert(1)' ) ),
+				)
+			)
+		);
+	}
+
+	public function test_a_missing_image_is_not_in_the_structured_data(): void {
+		$nodes = $this->nodes_after(
+			array(
+				'name'    => 'X',
+				'imageId' => 404,
+				'links'   => array( array( 'url' => '/a' ) ),
+			)
+		);
+
+		$this->assertArrayNotHasKey( 'image', $nodes[0] );
+	}
+
+	public function test_links_that_are_not_shown_are_not_in_the_structured_data(): void {
+		$nodes = $this->nodes_after(
+			array(
+				'name'  => 'X',
+				'links' => array(
+					array( 'url' => 'javascript:alert(1)' ),
+					array(
+						'label' => 'Kept',
+						'url'   => '/k',
+					),
+				),
+			)
+		);
+
+		$this->assertSame( array( 'Kept' ), array_column( $nodes[0]['associatedMedia'], 'name' ) );
+	}
+
+	public function test_the_compact_style_only_adds_what_it_shows(): void {
+		$nodes = $this->nodes_after(
+			array(
+				'name'   => 'X',
+				'preset' => 'compact',
+				'rows'   => array(
+					array(
+						'label' => 'Skipped',
+						'value' => '',
+					),
+					array(
+						'field' => 'ukuran',
+						'value' => '1 MB',
+					),
+					array(
+						'label' => 'Second',
+						'value' => '2',
+					),
+					array(
+						'field' => 'kredit',
+						'value' => 'Hidden credit',
+					),
+				),
+				'links'  => array(
+					array(
+						'label' => 'First',
+						'url'   => '/a',
+					),
+					array(
+						'label' => 'Second',
+						'url'   => '/b',
+					),
+				),
+			)
+		);
+
+		$this->assertArrayNotHasKey( 'creator', $nodes[0] );
+		$this->assertSame( array( 'First' ), array_column( $nodes[0]['associatedMedia'], 'name' ) );
+		$this->assertSame( '1 MB', $nodes[0]['associatedMedia'][0]['contentSize'] );
+	}
+
+	public function test_an_entry_that_is_rendered_twice_is_kept_once(): void {
+		$attributes = array(
+			'name'  => 'X',
+			'links' => array( array( 'url' => '/a' ) ),
+		);
+
+		$this->assertCount( 1, $this->nodes_after( $attributes, $attributes ) );
+		$this->assertCount( 2, $this->nodes_after( $attributes, array( 'name' => 'Y' ) + $attributes ) );
+	}
+
+	public function test_each_entry_keeps_its_own_values(): void {
+		$nodes = $this->nodes_after(
+			array(
+				'name' => 'A',
+				'rows' => array(
+					array(
+						'field' => 'kredit',
+						'value' => 'One',
+					),
+				),
+			),
+			array(
+				'name' => 'B',
+				'rows' => array(
+					array(
+						'field' => 'kredit',
+						'value' => 'Two',
+					),
+				),
+			)
+		);
+
+		$this->assertSame( array( 'One', 'Two' ), array_column( $nodes, 'creator' ) );
+	}
 }

@@ -4,6 +4,7 @@ namespace LunarDownload\Core;
 
 use LunarDownload\Blocks\DownloadInfo\EditorData;
 use LunarDownload\Blocks\DownloadInfo\Renderer;
+use LunarDownload\Blocks\DownloadInfo\SchemaOutput;
 use LunarDownload\Services\DesignTokens;
 use LunarDownload\Settings\Settings;
 use LunarDownload\Settings\SettingsPage;
@@ -16,6 +17,7 @@ class Plugin {
 
 		( new DesignTokens( $settings ) )->register();
 		( new BlockRegistry() )->register();
+		( new SchemaOutput() )->register();
 
 		// An entry reads the settings once per request; a change starts over.
 		foreach ( array( 'add', 'update', 'delete' ) as $action ) {

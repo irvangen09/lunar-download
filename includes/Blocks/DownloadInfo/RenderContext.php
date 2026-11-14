@@ -24,6 +24,13 @@ class RenderContext {
 	private string $date_format;
 
 	/**
+	 * Structured data of the entries rendered so far, keyed to leave out repeats.
+	 *
+	 * @var array[]
+	 */
+	private array $schema = array();
+
+	/**
 	 * @param array[]    $fields             Field definitions, archived ones included.
 	 * @param LinkPolicy $policy             Decides rel and which links can be shown.
 	 * @param string     $default_link_label Button text for a link without a label.
@@ -55,5 +62,22 @@ class RenderContext {
 
 	public function date_format(): string {
 		return $this->date_format;
+	}
+
+	/**
+	 * Keeps the structured data of one rendered entry. An identical entry that
+	 * is rendered again is kept once.
+	 *
+	 * @param array $node CreativeWork node.
+	 */
+	public function add_schema( array $node ): void {
+		$this->schema[ md5( (string) wp_json_encode( $node ) ) ] = $node;
+	}
+
+	/**
+	 * @return array[] Structured data of the rendered entries, in order.
+	 */
+	public function schema_nodes(): array {
+		return array_values( $this->schema );
 	}
 }

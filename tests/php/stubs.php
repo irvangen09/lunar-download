@@ -68,3 +68,37 @@ if ( ! function_exists( 'wp_get_attachment_image' ) ) {
 		return '<img src="https://example.test/uploads/' . $id . '.jpg" class="' . ( $attributes['class'] ?? '' ) . '" alt="' . esc_attr( $alt ) . '" data-size="' . $size . '"' . $sizes . ' loading="lazy" />';
 	}
 }
+
+if ( ! function_exists( 'wp_json_encode' ) ) {
+	function wp_json_encode( $data, $flags = 0, $depth = 512 ) {
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode -- Stand-in for the WordPress function.
+		return json_encode( $data, $flags, $depth );
+	}
+}
+
+if ( ! function_exists( 'home_url' ) ) {
+	function home_url( $path = '' ) {
+		return 'https://example.test' . $path;
+	}
+}
+
+if ( ! function_exists( 'wp_get_attachment_image_url' ) ) {
+	// Attachment 404 stands for a missing or non-image attachment.
+	function wp_get_attachment_image_url( $id, $size = 'thumbnail' ) {
+		return 404 === $id ? false : 'https://example.test/uploads/' . $id . '-' . $size . '.jpg';
+	}
+}
+
+if ( ! function_exists( 'wp_print_inline_script_tag' ) ) {
+	function wp_print_inline_script_tag( $data, $attributes = array() ) {
+		echo '<script type="' . esc_attr( $attributes['type'] ?? 'text/javascript' ) . '">' . $data . "</script>\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Stand-in for the WordPress function.
+	}
+}
+
+if ( ! function_exists( 'add_action' ) ) {
+	$GLOBALS['lunar_download_test_actions'] = array();
+
+	function add_action( $hook, $callback ) {
+		$GLOBALS['lunar_download_test_actions'][ $hook ][] = $callback;
+	}
+}
